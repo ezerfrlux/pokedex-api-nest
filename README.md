@@ -14,10 +14,16 @@ yarn install
 npm i -g @nestjs/cli
 ```
 
-4. Build the data base
+4. Build the database
 ```
 docker-compose up -d
 ```
+
+5. Rebuild the database with the SEED data
+```
+http://localhost:3000/api/v2/seed
+```
+
 
 ## Stack 
 
