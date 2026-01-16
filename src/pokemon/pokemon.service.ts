@@ -1,9 +1,7 @@
 import {
   BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
-  Query,
 } from '@nestjs/common';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
@@ -26,23 +24,21 @@ export class PokemonService {
       const pokemon = await this.pokemonModel.create(createPokemonDto);
       return pokemon;
     } catch (error) {
-      this.handleExceptions(error)
+      this.handleExceptions(error);
     }
   }
 
-  findAll(paginationDto:PaginationDto) {
+  findAll(paginationDto: PaginationDto) {
+    const { limit = 5, offset = 0 } = paginationDto;
 
-
-    const {limit = 10,offset = 0} = paginationDto
-
-
-    return this.pokemonModel.find()
+    return this.pokemonModel
+      .find()
       .limit(limit)
       .skip(offset)
       .sort({
-        no:1
+        no: 1,
       })
-      .select("-__v")
+      .select('-__v');
   }
 
   async findOne(term: string) {
@@ -78,22 +74,20 @@ export class PokemonService {
       await pokemon.updateOne(updatePokemonDto);
       return { ...pokemon.toJSON(), ...updatePokemonDto };
     } catch (error) {
-      this.handleExceptions(error)
+      this.handleExceptions(error);
     }
   }
 
   async remove(id: string) {
-
     // const result = this.pokemonModel.findByIdAndDelete(id)
 
-    const {deletedCount} = await this.pokemonModel.deleteOne({_id: id})
+    const { deletedCount } = await this.pokemonModel.deleteOne({ _id: id });
 
     if (deletedCount === 0) {
-      throw new BadRequestException(`Pokemon with id ${id} not found`)
+      throw new BadRequestException(`Pokemon with id ${id} not found`);
     }
 
-
-    return "Pokemon deleted successfully";
+    return 'Pokemon deleted successfully';
   }
 
   private handleExceptions(error: any) {
