@@ -11,11 +11,11 @@ import { EnvConfiguration } from './config/env.config';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      load: [EnvConfiguration]
+      load: [EnvConfiguration],
     }),
-    
+
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public')
+      rootPath: join(__dirname, '..', 'public'),
     }),
 
     MongooseModule.forRoot(process.env.MONGODB!),
@@ -24,14 +24,11 @@ import { EnvConfiguration } from './config/env.config';
 
     CommonModule,
 
-    SeedModule
+    SeedModule,
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule {
-  constructor(){
-    console.log(process.env);
-    
-  }
-} 
+  constructor() {}
+}
